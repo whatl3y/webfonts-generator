@@ -2,6 +2,7 @@ var fs = require('fs')
 var path = require('path')
 var _ = require('underscore')
 var handlebars = require('handlebars')
+var sass = require('node-sass')
 
 var renderCss = require('./renderCss')
 
@@ -16,9 +17,15 @@ var renderHtml = function(options) {
 	var htmlFontsPath = path.relative(options.htmlDest, options.dest)
 	// Styles embedded in the html file should use default CSS template and
 	// have path to fonts that is relative to html file location.
-	var styles = renderCss(_.extend({}, options, {
+	// TODO determine if CSS provided in options is SCSS or CSS, and update
+	// accordingly
+	// var styles = renderCss(_.extend({}, options, {
+	// 	cssFontPath: htmlFontsPath
+	// }))
+	var sassString = renderCss(_.extend({}, options, {
 		cssFontPath: htmlFontsPath
 	}))
+	var styles = sass.renderSync({ data: sassString })
 
 	var ctx = _.extend({
 		names: options.names,
