@@ -25,7 +25,7 @@ var renderHtml = function(options) {
 	var sassString = renderCss(_.extend({}, options, {
 		cssFontPath: htmlFontsPath
 	}))
-	var styles = sass.renderSync({ data: sassString })
+	var styles = sass.renderSync({ data: sassString }).css
 
 	var ctx = _.extend({
 		names: options.names,
